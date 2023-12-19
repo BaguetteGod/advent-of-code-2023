@@ -17,7 +17,30 @@ pub fn part_one(input: &str) -> Option<u32> {
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    None
+    const NUMBERS: [&str; 9] = [
+        "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+    ];
+
+    let mut sum = 0;
+    for line in input.lines() {
+        let mut digits: Vec<u32> = Vec::new();
+        for (index, char) in line.chars().enumerate() {
+            if char.is_numeric() {
+                digits.push(char.to_digit(10).unwrap())
+            }
+            for (index_num, number) in NUMBERS.iter().enumerate() {
+                if line[index..].starts_with(number) {
+                    digits.push(index_num as u32 + 1)
+                }
+            }
+        }
+        let first = digits.first().unwrap().to_owned();
+        let last = digits.last().unwrap().to_owned();
+
+        sum += first * 10 + last;
+    }
+
+    Some(sum)
 }
 
 #[cfg(test)]
